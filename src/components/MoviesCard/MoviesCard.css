@@ -1,0 +1,23 @@
+.card__group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 18px 0 14px;
+    margin-top: 14px;
+}
+.card__name {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    margin: 0;
+}
+.card__time {
+    color: #A0A0A0;
+    font-size: 11px;
+    line-height: 10px;
+    margin: 0 ;
+    padding: 3px 4px;
+    background: #F4F4F4;
+    border-radius: 3px;
+}
+
