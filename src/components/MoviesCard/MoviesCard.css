@@ -1,0 +1,55 @@
+.card {
+    position: relative;
+}
+.card__group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 18px 0 14px;
+    margin-top: 14px;
+}
+.card__name {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    margin: 0;
+}
+.card__time {
+    color: #A0A0A0;
+    font-size: 11px;
+    line-height: 10px;
+    margin: 0 ;
+    padding: 3px 4px;
+    background: #F4F4F4;
+    border-radius: 3px;
+}
+.card__save {
+    background: #F4F4F4;
+    border-radius: 30px;
+    width: 72px;
+    height: 21px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000000;
+    border: none;
+    padding: 0;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    cursor: pointer;
+}
+.card__saved {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+}
+.card__delete {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+}

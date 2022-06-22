@@ -1,0 +1,139 @@
+.me {
+    padding: 110px 0 0;
+}
+.me__container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 70px;
+}
+.me__title {
+    margin: 0;
+    padding-bottom: 23px;
+    border-bottom: 1px solid #000;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 27px;
+    letter-spacing: -0.04em;
+    color: #000000;
+}
+.me__blocks {
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    column-gap: 50px;
+}
+.me__info-name {
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 58px;
+    letter-spacing: -0.04em;
+    color: #000000;
+    margin: 0 0 18px 0;
+}
+.me__info-position {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    color: #000000;
+    margin:  0 0 26px 0;
+}
+.me__info-about {
+    max-width: 600px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: #000000;
+    mix-blend-mode: normal;
+    margin: 0;
+}
+.me__info-social {
+    display: flex;
+    column-gap: 20px;
+    padding: 0;
+    margin: 100px 0 0 0;
+}
+.me__info-li  {
+    list-style: none;
+}
+.me__info-link {
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+}
+
+@media screen and (max-width: 980px) { 
+    .me__container {
+        padding: 0 50px;
+    }
+}
+@media screen and (max-width: 768px) {
+    .me {
+        padding: 90px 0 0;
+    }
+    .me__info-name {
+        font-size: 40px;
+        line-height: 40px;
+    }
+    .me__info-position {
+        font-size: 12px;
+        margin: 0 0 20px 0;
+        line-height: 18px;
+    }
+    .me__info-about {
+        font-size: 12px;
+        line-height: 18px;
+    }
+    .me__info-social {
+        margin-top: 80px;
+    }
+}
+@media screen and (max-width: 640px) { 
+    .me__blocks {
+        flex-wrap: wrap;
+        row-gap: 40px;
+    }
+    .me__avatar {
+        order: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .me__info {
+        order: 1;
+    }
+    .me__picture {
+        max-width: 292px;
+        width: 100%;
+    }
+}
+@media screen and (max-width: 480px) { 
+    .me {
+        padding: 70px 0 0;
+    }
+    .me__container {
+        padding: 0 14px;
+    }
+    .me__title {
+        padding-bottom: 28px;
+    }
+    .me__info-name {
+        font-size: 30px;
+        line-height: 36px;
+        margin-bottom: 20px;
+    }
+    .me__info-position {
+        font-size: 11px;
+        line-height: 16px;
+    }
+    .me__info-about {
+        font-size: 11px;
+        line-height: 16px;
+    }
+    .me__info-social {
+        margin-top: 40px;
+    }
+
+} 
