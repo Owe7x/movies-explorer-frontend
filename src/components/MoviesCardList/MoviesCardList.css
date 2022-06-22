@@ -15,10 +15,7 @@
 }
 .cards__button {
     display: block;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 15px;
-    color: #000000;
+
     max-width: 320px;
     width: 100%;
     height: 36px;
@@ -28,6 +25,7 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
 @media screen and (max-width: 980px){ 
     .cards__container {
         padding: 0 50px;

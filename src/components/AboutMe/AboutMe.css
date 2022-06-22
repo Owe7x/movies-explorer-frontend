@@ -1,5 +1,5 @@
 .me {
-    padding: 110px 0 125px;
+    padding: 110px 0 0;
 }
 .me__container {
     max-width: 1140px;
@@ -21,6 +21,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    column-gap: 50px;
 }
 .me__info-name {
     font-weight: 400;
@@ -62,51 +63,7 @@
     line-height: 17px;
     color: #000000;
 }
-.portfolio {
-    margin-top: 100px;
-}
-.portfolio__title {
-    margin: 0;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 20px;
-    color: #A0A0A0;
-}
-.portfolio__blocks {
-    margin: 50px 0 0 0;
-    padding: 0;
-}
-.portfolio__name {
-    font-weight: 400;
-    font-size: 30px;
-    line-height: 50px;
-    letter-spacing: -0.04em;
-    color: #000000;
-    margin: 0;
-}
-.portfolio__block {
-    display: flex;
-    justify-content: space-between;
-    font-weight: 400;
-    font-size: 30px;
-    line-height: 50px;
-    letter-spacing: -0.04em;
-    color: #000000;
-    list-style: none;
-    padding: 20px 0;
-    border-bottom: 1px solid #E8E8E8;
-}
-.portfolio__block:last-child {
-    border-bottom: none;
-}
-.portfolio__link {
-    font-weight: 400;
-    font-size: 30px;
-    line-height: 60px;
-    letter-spacing: -0.04em;
-    color: #000000;
-    text-decoration: none;
-}
+
 @media screen and (max-width: 980px) { 
     .me__container {
         padding: 0 50px;
@@ -114,10 +71,7 @@
 }
 @media screen and (max-width: 768px) {
     .me {
-        padding: 90px 0;
-    }
-    .me__blocks {
-        column-gap: 50px;
+        padding: 90px 0 0;
     }
     .me__info-name {
         font-size: 40px;
@@ -134,12 +88,6 @@
     }
     .me__info-social {
         margin-top: 80px;
-    }
-    .portfolio {
-        margin-top: 90px;
-    }
-    .portfolio__name {
-        font-size: 28px;
     }
 }
 @media screen and (max-width: 640px) { 
@@ -163,7 +111,7 @@
 }
 @media screen and (max-width: 480px) { 
     .me {
-        padding: 70px 0 50px;
+        padding: 70px 0 0;
     }
     .me__container {
         padding: 0 14px;
@@ -187,21 +135,5 @@
     .me__info-social {
         margin-top: 40px;
     }
-    .portfolio {
-        margin-top: 69px;
-    }
-    .portfolio__title {
-        margin: 0 0 20px 0;
-    }
-    .portfolio__name {
-        font-size: 18px;
-        line-height: 28px;
-    }
-    .portfolio__link {
-        font-size: 18px;
-        line-height: 28px;
-    }
-    .portfolio__blocks {
-        margin-top: 20px;
-    }
+
 } 

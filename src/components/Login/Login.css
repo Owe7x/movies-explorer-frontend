@@ -171,4 +171,11 @@
     .register__button {
         margin-top: 310px;
     }
+    .login__link-logo {
+        display: block;
+        margin: 0 auto;
+    }
+    .login__title {
+        text-align: center;
+    }
 }

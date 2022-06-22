@@ -3,7 +3,7 @@ import NavTab from '../NavTab/NavTab'
 import AboutProject from '../AboutProject/AboutProject'
 import Tech from '../Techs/Techs'
 import AboutMe from '../AboutMe/AboutMe'
-import Footer from '../Footer/Footer'
+import Portfolio from '../Portfolio/Portfolio'
 
 import './Main.css'
 
@@ -16,7 +16,8 @@ function Main() {
             <AboutProject></AboutProject>
             <Tech></Tech>
             <AboutMe></AboutMe>
-            <Footer></Footer>
+            <Portfolio></Portfolio>
+
         </>
     )
 }

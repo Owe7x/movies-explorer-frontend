@@ -8,6 +8,7 @@ import Profile from '../Profile/Profile'
 import Register from '../Register/Register'
 import SavedMovies from '../SavedMovies/SavedMovies';
 import NotFound from '../NotFound/NotFound';
+import Footer from '../Footer/Footer';
 import './App.css';
 
 function App() {
@@ -15,7 +16,6 @@ function App() {
   
   let curLocation = window.location.href
 
-  console.log(curLocation);
   return (
     <BrowserRouter>
     <div className="app">
@@ -23,18 +23,19 @@ function App() {
             { curLocation === 'http://localhost:3000/movies' && <Header loggedIn={loggedIn}/> }
             { curLocation === 'http://localhost:3000/saved-movies' && <Header loggedIn={loggedIn} /> }
             { curLocation === 'http://localhost:3000/profile' && <Header loggedIn={loggedIn}/> }
-  
-        <Routes>
-          
-            <Route path='/' element={<Main />} />
+      <main>
+      <Routes>
+          <Route path='/' element={<Main />} />
             <Route path='/movies' element={<Movies />} />
             <Route path='/saved-movies' element={<SavedMovies />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/signin' element={<Login />} />
             <Route path='/signup' element={<Register />} />
             <Route path='*' element={<NotFound /> }/>
-          
         </Routes>
+      </main>
+
+        <Footer></Footer>
     </div>
   </BrowserRouter>
 

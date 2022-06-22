@@ -13,9 +13,9 @@ function Footer() {
                         © 2020
                     </p>
                     <div className="footer__social">
-                        <a href="#\" className="footer__social-link">Яндекс.Практикум</a>
-                        <a href="#\" className="footer__social-link">Github</a>
-                        <a href="#\" className="footer__social-link">Facebook</a>
+                        <a href="https://practicum.yandex.ru/" className="footer__social-link">Яндекс.Практикум</a>
+                        <a href="https://github.com/Owe7x" className="footer__social-link">Github</a>
+                        <a href="https://www.facebook.com/" className="footer__social-link">Facebook</a>
                     </div>
                 </div>
             </div>

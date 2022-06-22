@@ -173,4 +173,11 @@
     .register__button {
         margin-top: 310px;
     }
+    .register__link-logo {
+        display: block;
+        margin: 0 auto;
+    }
+    .register__title {
+        text-align: center;
+    }
 }
