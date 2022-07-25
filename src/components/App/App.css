@@ -1,8 +1,16 @@
-.app {
+#root {
   background-color: #FAFAFA;
   font-family: 'Inter';
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
 }
-
+html, body {
+  height: 100%;
+}
+.content {
+	flex: 1 0 auto;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

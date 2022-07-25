@@ -1,5 +1,11 @@
 .card {
     position: relative;
+ 
+}
+.card__img {
+    width: 100%;
+    border-radius: 6px;
+    height: 201px;
 }
 .card__group {
     display: flex;
@@ -13,6 +19,10 @@
     font-size: 13px;
     line-height: 16px;
     margin: 0;
+    color: #000000;
+}
+.cards__button-hide {
+    display: none;
 }
 .card__time {
     color: #A0A0A0;
@@ -42,14 +52,29 @@
     top: 14px;
     right: 14px;
     cursor: pointer;
+    z-index: 10;
 }
 .card__saved {
     position: absolute;
     top: 14px;
     right: 14px;
+    background-image: url(../../images/saved.svg);
+    width: 21px;
+    height: 21px;
 }
 .card__delete {
     position: absolute;
     top: 14px;
     right: 14px;
+    background-image: url(../../images/delete.svg);
+    width: 21px;
+    height: 21px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.card__link {
+    text-decoration: none;
+    color: transparent;
 }
