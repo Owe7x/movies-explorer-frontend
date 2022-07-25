@@ -1,0 +1,140 @@
+.profile{
+    display: flex;
+    justify-content: center;
+    background-color: #FAFAFA;
+    height: calc(100vh - 77px);
+}
+
+.profile__container{
+    width: 410px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 75px 30px;
+}
+
+.profile__title{
+    font-size: 24px;
+    line-height: 29px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0 0 123px;
+}
+
+.profile__form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile__label{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #000000;
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 500;
+}
+
+.profile__input{
+    height: 32px;
+    width: 90%;
+    color: #000;
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 400;
+    background-color: transparent;
+    padding: 0;
+    border: 0;
+    text-align: right;
+    outline: none;
+}
+
+.profile__input_wrong{
+    color: #EE3465;
+}
+
+.profile__input-error{
+    text-align: center;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #EE3465;
+}
+
+.profile__text{
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.profile__text-right{
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 400;
+    text-align: right;
+}
+
+.profile__line{
+    width: 100%;
+    border-bottom: 1px solid #E8E8E8;
+    margin: 16px auto 17px;
+}
+
+.profile__buttons{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 220px;
+}
+
+.profile__button{
+    color: #000;
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 400;
+    border: none;
+    background-color: transparent;
+    transition: 300ms;
+    cursor: pointer;
+}
+
+.profile__button:hover{
+    opacity: 0.7;
+    transition: 300ms;
+}
+
+.profile__button_disabled{
+    opacity: .3;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+
+.profile__button-red{
+    color: #EE3465;
+    margin-top: 16px;
+    transition: 300ms;
+}
+
+.profile__hover:hover{
+    cursor: pointer;
+    opacity: 0.7;
+    transition: 300ms;
+}
+
+@media screen and (max-width: 425px) {
+    .profile__input {
+        width: 80%;
+    }
+}
