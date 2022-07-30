@@ -71,7 +71,7 @@ export const changeProfile = ({ jwt, name, email }) => {
 }
 
 export const setSaveMovie = ({jwt , movie}) => {
-    console.log(movie);
+
     return fetch(`${BASE_URL}/movies`, {
         method: "POST",
         credentials: "include",

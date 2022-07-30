@@ -24,13 +24,15 @@ function App() {
   const [isChangeBoxSave, setIsChangeBoxSave] = useState(true);
   /* Отфильтрованные фильмы */
   const [filterMoviesCollection, setFilterMoviesCollection] = useState([]);
+    /* Отфильтрованные сохраненные фильмы */
+  const [filterMoviesSaveCollection, setFilterMoviesSaveCollection] = useState([]);
   /* Отфильтрованные фильмы по времени */
   const [filterTimeMoviesCollection , setFilterTimeMoviesCollection ] = useState([]);
-  /* Сохраненные фильмы отсортированные по времени */
+  /* Отфильтрованные сохраненные фильмы по времени */
   const [filterTimeMoviesSaveCollection , setFilterTimeMoviesSaveCollection ] = useState([]);
     /* Сохраненные фильмы */
     const [saveMovieCollection, setSaveMovieCollection] = useState([]);
-  /* Пока сам не понимаю  */
+  /* Все фильмы  */
   const [moviesCollection, setMoviesCollection] = useState([]);
   /* Прелоадер загрузки фильмов */
   const [isLoadingMovies, setIsLoadingMovies] = useState(false);
@@ -118,7 +120,7 @@ function App() {
       })
       .catch((err) => {
         if (err === '401') return setLoginError('Неправильный логин или пароль');
-        if (err === '500') return setLoginError('Ошибка сервера');
+        if (err === '500') return setLoginError('Ошибка');
         setLoginError('Попробуйте еще раз!');
         console.log(err.status);
     })
@@ -219,22 +221,38 @@ function App() {
   }
   /* Поиск фильмов по избранному */
   function findSaveMovies(movie) {
+    setIsLoadingMovies(true);
     if(movie) {
-      if (saveMovieCollection.length > 0) {
-        setFilterTimeMoviesSaveCollection(searchMovies(saveMovieCollection, movie));
-        setSaveMovieCollection(searchMovies(JSON.parse(localStorage.getItem('savedMovies')), movie))
-      }
+      
+      const movieSaveCollection = JSON.parse(localStorage.getItem('savedMovies'))
+
+      const result = searchMovies(movieSaveCollection, movie);
+      if (result.length > 0) {
+        setSearchError(false);
+      } 
       else {
-          console.log('Fail');
-  
+        setSearchError(true);
+      }
+      setFilterMoviesSaveCollection(result)
+      setIsLoadingMovies(false);
+      console.log(filterMoviesSaveCollection);
+      if (isChangeBoxSave) {
+        const resultTimeFilter = filterMovieTime(result);
+        if (resultTimeFilter.length > 0) {
+          setSearchError(false);
+        }
+        else {
+          setSearchError(true);
+        }
+        filterTimeMoviesSaveCollection(resultTimeFilter);
       }
     } else {
-      setSaveMovieCollection(JSON.parse(localStorage.getItem('savedMovies')))
+      setFilterMoviesSaveCollection(JSON.parse(localStorage.getItem('savedMovies')))
       setIsChangeBoxSave(false)
+      setIsLoadingMovies(false);
 
     }
-
-}
+  }
   /* Сохранить фильм в избранное */
 
   function saveMovieInCollection(movie) {
@@ -348,7 +366,9 @@ function App() {
     }
     if(isChangeBoxSave) {
       if(pathname.pathname === "/saved-movies") {
+        console.log(saveMovieCollection);
         const result = filterMovieTime(saveMovieCollection);
+        console.log(result);
         if (result.length > 0) {
           setSearchError(false);
         }
@@ -356,15 +376,16 @@ function App() {
           setSearchError(true);
         }
         setFilterTimeMoviesSaveCollection(result);
-
       }
+    } else {
+      setSearchError(false);
     }
 }, [isChangeBox, isChangeBoxSave])
 
   useEffect(() => {
     localStorage.movies && setFilterMoviesCollection(JSON.parse(localStorage.getItem('movies')))
     localStorage.moviesShort && setFilterTimeMoviesCollection(JSON.parse(localStorage.getItem('moviesShort')))
-    localStorage.savedMovies && setSaveMovieCollection(JSON.parse(localStorage.getItem('savedMovies')))
+
 
     setIsChangeBox(getCheckBox)
     setSearchError(false);
@@ -403,7 +424,7 @@ function App() {
                     changeCheckBox={changeCheckBox} 
                     isChangeBox={isChangeBox} 
                     isChangeBoxSave= {isChangeBoxSave}
-                    moviesCollection={isChangeBoxSave ? filterTimeMoviesSaveCollection : saveMovieCollection}
+                    moviesCollection={isChangeBoxSave ? filterTimeMoviesSaveCollection : filterMoviesSaveCollection}
                     isLoadingMovies={isLoadingMovies}
                     searchError={searchError}
                     searchServerError={searchServerError}
