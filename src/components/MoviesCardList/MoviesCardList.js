@@ -58,13 +58,13 @@ function MoviesCardList({moviesCollection, isLoadingMovies, searchError, searchS
         <p className="cards__form__error">{searchServerError ? "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз" : ""}</p>
             <div className={isLoadingMovies ? 'cards__container-none' : 'cards__container'} >
                 {
-                    pathname.pathname === "/movies" ? 
-                       moviesVisible.map((movies, index) => { 
+                    pathname.pathname === '/movies' ?
+                    moviesVisible.map((movies, index) => { 
                         return (<MoviesCard key={index} movies={movies} isSave={isSave} saveMovieCollection={saveMovieCollection} saveMovieInCollection={saveMovieInCollection}  deleteMovieInCollection={deleteMovieInCollection}/>)
                     })
                     :
                     moviesVisible.map((movies, index) => { 
-                        return (<MoviesCard key={index} movies={movies} isSave={isSave} saveMovieCollection={saveMovieCollection} saveMovieInCollection={saveMovieInCollection} deleteMovieInCollection={deleteMovieInCollection}/>)
+                        return (<MoviesCard key={index} movies={movies} isSave={isSave} saveMovieCollection={saveMovieCollection} saveMovieInCollection={saveMovieInCollection}  deleteMovieInCollection={deleteMovieInCollection}/>)
                     })
                 }
 

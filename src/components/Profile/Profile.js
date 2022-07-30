@@ -1,10 +1,10 @@
 import './Profile.css'
 import React from 'react';
-import {  useEffect } from 'react';
+import {  useEffect, useState } from 'react';
 import { CurrentUser } from '../../context/CurrentUserContext';
 import { FormValidation } from '../../hooks/formValidation';
 
-function Profile({changeUserInfo, logOut}) {
+function Profile({changeUserInfo, logOut, profileError, setProfileError}) {
 
     const currentUser = React.useContext(CurrentUser);
 
@@ -13,7 +13,13 @@ function Profile({changeUserInfo, logOut}) {
 
 
     function handleChangeInput(e) {
-        handleChange(e)     
+
+        handleChange(e)
+
+        if (profileError.length > 0) {
+            setProfileError("");
+        }    
+
     }
 
     useEffect(() => {
@@ -70,6 +76,7 @@ function Profile({changeUserInfo, logOut}) {
                         <span className='profile__input-error'></span>
 
                         <div className='profile__buttons'>
+                            <span className="profile__error">{profileError}</span>
                             <button className={`profile__button  profile__button--profile ${!isValid && 'profile__button_disabled'}`} disabled={!isValid} type='submit'>Редактировать</button>
                             <button onClick={logOutProfile} className='profile__button profile__button-red profile__hover' type='button'>Выйти из аккаунта</button>
                         </div>

@@ -2,7 +2,7 @@ import './Movies.css'
 import SearchForm from '../SearchForm/SearchForm'
 import MoviesCardList from '../MoviesCardList/MoviesCardList'
 
-function Movies({ findSaveMovies, findMovies,  isChangeBox , moviesCollection, isLoadingMovies, searchError, searchServerError, changeCheckBox,  saveMovieCollection, saveMovieInCollection, deleteMovieInCollection}) {
+function Movies({ findSaveMovies, findMovies,  isChangeBox , isChangeBoxSave,  moviesCollection, isLoadingMovies, searchError, searchServerError, changeCheckBox,  saveMovieCollection, saveMovieInCollection, deleteMovieInCollection}) {
     
 
     return (
@@ -11,6 +11,7 @@ function Movies({ findSaveMovies, findMovies,  isChangeBox , moviesCollection, i
                 findMovies={findMovies}
                 changeCheckBox={changeCheckBox}
                 isChangeBox={isChangeBox}
+                isChangeBoxSave={isChangeBoxSave}
                 isSave={false}
                 findSaveMovies={findSaveMovies}
             ></SearchForm>

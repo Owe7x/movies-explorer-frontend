@@ -18,8 +18,10 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 function App() {
   /* Авторизован или нет */
   const [loggedIn, setLoggedIn] = useState(false);
-  /* Toggle короткометражек */
+  /* Toggle короткометражек Фильмов */
   const [isChangeBox, setIsChangeBox] = useState(true);
+    /* Toggle короткометражек Сохраненных Фильмов */
+  const [isChangeBoxSave, setIsChangeBoxSave] = useState(true);
   /* Отфильтрованные фильмы */
   const [filterMoviesCollection, setFilterMoviesCollection] = useState([]);
   /* Отфильтрованные фильмы по времени */
@@ -38,16 +40,21 @@ function App() {
   const [searchServerError, setSearchServerError] = useState(false);
   /* Ошибка регистрации */
   const [registerError , setRegisterError] = useState('')
-
+  const [profileError, setProfileError] = useState("");
+  const [loginError, setLoginError] = useState("");
   /* Данные о пользователе */
-  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
+  const [currentUser, setCurrentUser] = useState({});
 
   /* Переход по страницам*/
   const history = useHistory();
   const pathname = useLocation();
-  /* Достаем из localStorate состояние checkbox */
+  /* Достаем из localStorate состояние checkbox Фильмов */
   let getCheckBox = JSON.parse(localStorage.getItem('isChangeBox'))
 
+
+  useEffect(() => {
+      console.log('Получить все фильмы');
+  }, [])
   /* Проверка пользователя по токену */
 
   useEffect(() => {
@@ -61,7 +68,6 @@ function App() {
           setSaveMovieCollection(resultSave);
         }
         if (movies) {
-          console.log(movies);
           const result = JSON.parse(movies);
           setMoviesCollection(result);
         }
@@ -87,7 +93,7 @@ function App() {
     console.log(email, password);
     login({email , password})
       .then((data) => {
-        console.log(data);
+
         if(data.token) {
 
           localStorage.setItem('jwt', data.token);
@@ -97,11 +103,11 @@ function App() {
             .then((data) => {
               setSaveMovieCollection(data)
               localStorage.setItem('savedMovies', JSON.stringify(data));
-              console.log(data);
+
             })
           getUserInfo(data.token)
             .then((data) => {
-              console.log(data);
+
               setCurrentUser(data);
               localStorage.setItem('currentUser', JSON.stringify(data)) 
             })
@@ -111,8 +117,11 @@ function App() {
         }
       })
       .catch((err) => {
-        console.log(err);
-      })
+        if (err === '401') return setLoginError('Неправильный логин или пароль');
+        if (err === '500') return setLoginError('Ошибка сервера');
+        setLoginError('Попробуйте еще раз!');
+        console.log(err.status);
+    })
   }
 
   /* Регистрация пользователя */
@@ -136,10 +145,11 @@ function App() {
     setIsLoadingMovies(true);
     setSearchError(false);
     setSearchServerError(false)
-      if(searchText) {
+      if(moviesCollection.length === 0) {
         MoviesApi.getMoives()
           .then((res) => {
             setMoviesCollection(res);
+            localStorage.setItem('moviesCollection', JSON.stringify(res));
             const result = searchMovies(res, searchText);
             localStorage.setItem('movies', JSON.stringify(result));
             if (result.length > 0) {
@@ -160,11 +170,38 @@ function App() {
                 setSearchError(true);
               }
               setFilterTimeMoviesCollection(resultTimeFilter);
+              localStorage.setItem('moviesShort', JSON.stringify(resultTimeFilter));
             }
           })
           .catch((err) => {
             setSearchServerError(true);
           })
+      } else {  
+       const movieCollection = JSON.parse(localStorage.getItem('moviesCollection'))
+
+       const result = searchMovies(movieCollection, searchText);
+       localStorage.setItem('movies', JSON.stringify(result));
+       if (result.length > 0) {
+         setSearchError(false);
+       } 
+       else {
+         setSearchError(true);
+       }
+       setFilterMoviesCollection(result)
+       setIsLoadingMovies(false);
+
+       if (isChangeBox) {
+         const resultTimeFilter = filterMovieTime(result);
+         if (resultTimeFilter.length > 0) {
+           setSearchError(false);
+         }
+         else {
+           setSearchError(true);
+         }
+         setFilterTimeMoviesCollection(resultTimeFilter);
+         localStorage.setItem('moviesShort', JSON.stringify(resultTimeFilter));
+       }
+
       }
 
 
@@ -182,16 +219,21 @@ function App() {
   }
   /* Поиск фильмов по избранному */
   function findSaveMovies(movie) {
-    console.log(movie);
-    console.log(saveMovieCollection);
-    if (saveMovieCollection.length > 0) {
-      setFilterTimeMoviesSaveCollection(searchMovies(saveMovieCollection, movie));
-      setSaveMovieCollection(searchMovies(saveMovieCollection, movie))
-    }
-    else {
-        console.log('Fail');
+    if(movie) {
+      if (saveMovieCollection.length > 0) {
+        setFilterTimeMoviesSaveCollection(searchMovies(saveMovieCollection, movie));
+        setSaveMovieCollection(searchMovies(JSON.parse(localStorage.getItem('savedMovies')), movie))
+      }
+      else {
+          console.log('Fail');
+  
+      }
+    } else {
+      setSaveMovieCollection(JSON.parse(localStorage.getItem('savedMovies')))
+      setIsChangeBoxSave(false)
 
     }
+
 }
   /* Сохранить фильм в избранное */
 
@@ -203,7 +245,6 @@ function App() {
         let saveMoviesList = JSON.parse(localStorage.getItem('savedMovies'))
         saveMoviesList = saveMoviesList.concat(movie) 
         localStorage.setItem('savedMovies', JSON.stringify(saveMoviesList))
-        console.log(movie);
       })
   }
   /* Удалить фильм из избранного */
@@ -211,7 +252,6 @@ function App() {
   function deleteMovieInCollection(movie) {
     const jwt = localStorage.getItem('jwt');
     const movieId = movie._id || saveMovieCollection.find((item) => item.movieId === movie.id)._id;
-    console.log(saveMovieCollection);
     deleteSaveMovie({jwt , movieId})
       .then((data) => {
         let saveMoviesList = JSON.parse(localStorage.getItem('savedMovies'))
@@ -230,23 +270,39 @@ function App() {
             result.push(movie);
         }
     })
-    console.log(result);
     return result;
   } 
 
   /* Переключатель короткометражек */
   function changeCheckBox() {
-    setIsChangeBox(!isChangeBox)
+    if(pathname.pathname === "/movies") {
+      setIsChangeBox(!isChangeBox)
+    } else if (pathname.pathname === "/saved-movies") {
+      setIsChangeBoxSave(!isChangeBoxSave)
+    }
+
   }
 
   /* Изменить информацию о пользователе */
 
   function changeUserInfo({name , email}) {
     const jwt = localStorage.getItem('jwt');
-    changeProfile({jwt, name, email})
+    if (name === currentUser.user.name && email === currentUser.user.email) {
+      setProfileError("Введенные данные соотвествуют данным профиля")
+    } else {
+      changeProfile({jwt, name, email})
       .then((value) => {
-        console.log(value);
-      })
+
+        if(value._id) {
+          setCurrentUser({user : value})
+          setProfileError("Данные профиля успешно изменены");
+        } else if (value.message) {
+          setProfileError(value.message);
+        }
+
+      }).catch((err) => setProfileError("Произошла ошибка при обновлении профиля"));
+    }
+
   }
 
   /* Выход из системы */
@@ -254,19 +310,29 @@ function App() {
   function logOut() {
     localStorage.removeItem('jwt');
     localStorage.removeItem('savedMovies');
-    setSaveMovieCollection([])
+    localStorage.removeItem('isChangeBoxSave');
+    localStorage.removeItem('movies');
+    localStorage.removeItem('SaveMoviesShort');
+    localStorage.removeItem('isChangeBox');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('textForm');
+    localStorage.removeItem('textFormSave');
+    localStorage.removeItem('moviesShort');
+    setMoviesCollection([]);
+    setFilterMoviesCollection([]);
+    setFilterTimeMoviesCollection([]);
+    setFilterTimeMoviesSaveCollection([]);
+    setSaveMovieCollection([]);
+    setMoviesCollection([]);
     setLoggedIn(false)
     history.push('/');
   }
+
   useEffect(() => {
-    console.log('work');
     if (isChangeBox) {
-      console.log(isChangeBox);
         if (pathname.pathname === "/movies") {
-          console.log('work 2');
-          console.log(moviesCollection);
             if (moviesCollection.length > 0) {
-              
+                console.log(filterMoviesCollection);
                 const result = filterMovieTime(filterMoviesCollection);
                 console.log(result);
                 if (result.length > 0) {
@@ -276,25 +342,33 @@ function App() {
                   setSearchError(true);
                 }
                 setFilterTimeMoviesCollection(result);
+                localStorage.setItem('moviesShort', JSON.stringify(result));
             }
         }
-        else if (pathname.pathname === "/saved-movies") {
-            const result = filterMovieTime(saveMovieCollection);
-            if (result.length > 0) {
-              setSearchError(false);
-            }
-            else {
-              setSearchError(true);
-            }
-            setFilterTimeMoviesSaveCollection(result);
-        }
-
     }
-}, [isChangeBox])
+    if(isChangeBoxSave) {
+      if(pathname.pathname === "/saved-movies") {
+        const result = filterMovieTime(saveMovieCollection);
+        if (result.length > 0) {
+          setSearchError(false);
+        }
+        else {
+          setSearchError(true);
+        }
+        setFilterTimeMoviesSaveCollection(result);
+
+      }
+    }
+}, [isChangeBox, isChangeBoxSave])
 
   useEffect(() => {
     localStorage.movies && setFilterMoviesCollection(JSON.parse(localStorage.getItem('movies')))
+    localStorage.moviesShort && setFilterTimeMoviesCollection(JSON.parse(localStorage.getItem('moviesShort')))
+    localStorage.savedMovies && setSaveMovieCollection(JSON.parse(localStorage.getItem('savedMovies')))
+
     setIsChangeBox(getCheckBox)
+    setSearchError(false);
+    setIsChangeBoxSave(false)
   }, [])
 
   return (
@@ -312,6 +386,7 @@ function App() {
                       findMovies={findMovies}
                       changeCheckBox={changeCheckBox} 
                       isChangeBox={isChangeBox} 
+                      isChangeBoxSave= {isChangeBoxSave}
                       moviesCollection={isChangeBox ? filterTimeMoviesCollection : filterMoviesCollection}
                       isLoadingMovies={isLoadingMovies}
                       searchError={searchError}
@@ -327,7 +402,8 @@ function App() {
                     findMovies={findMovies}
                     changeCheckBox={changeCheckBox} 
                     isChangeBox={isChangeBox} 
-                    moviesCollection={isChangeBox ? filterTimeMoviesSaveCollection : saveMovieCollection}
+                    isChangeBoxSave= {isChangeBoxSave}
+                    moviesCollection={isChangeBoxSave ? filterTimeMoviesSaveCollection : saveMovieCollection}
                     isLoadingMovies={isLoadingMovies}
                     searchError={searchError}
                     searchServerError={searchServerError}
@@ -341,19 +417,24 @@ function App() {
                   <Profile
                     changeUserInfo={changeUserInfo}
                     logOut={logOut}
+                    profileError={profileError}
+                    setProfileError={setProfileError}
                   />
                 </ProtectedRoute>
-                <Route exact  path='/signin'>
+                <ProtectedRoute exact path="/signin" loggedIn={!loggedIn}>
                   <Login
-                  onLogin={onLogin}
-                  />
-                </Route>
-                <Route exact  path='/signup'>
-                  <Register
+                    onLogin={onLogin}
+                    loginError={loginError} 
+                    setLoginError={setLoginError}
+                    />
+                </ProtectedRoute>
+                <ProtectedRoute exact path="/signup" loggedIn={!loggedIn}>
+                <Register
                     onRegister={onRegister}
                     registerError={registerError}
                   />
-                </Route>
+                </ProtectedRoute>
+
                 <Route exact  path='*'>
                   <NotFound />
                 </Route>

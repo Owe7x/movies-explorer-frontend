@@ -4,7 +4,7 @@ import logo from '../../images/logo-register.svg'
 import './Login.css'
 import { FormValidation } from '../../hooks/formValidation';
 
-function Login({onLogin}) {
+function Login({onLogin, loginError, setLoginError}) {
 
     const [btnDisable , setBtnDisable] = useState(true)
     const validForm = FormValidation()
@@ -17,6 +17,9 @@ function Login({onLogin}) {
         evt.preventDefault();
         onLogin(validForm.values);
         validForm.resetForm()
+        if (loginError.length > 0) {
+            setLoginError("");
+        }
     }
 
     return (
@@ -48,7 +51,7 @@ function Login({onLogin}) {
                         type='password' 
                         name='password'
                         id='password'
-                        minLength='6' 
+                        minLength='3' 
                         maxLength='20' 
                         required
                         title='поле должно содержать не менее 6 и не более 20 знаков'  
@@ -59,7 +62,9 @@ function Login({onLogin}) {
                     </label>
                     <button className={`register__button ${btnDisable && 'register__button_disabled'}`} type="submit">Войти</button>
                 </form>
+                <p className="login__error">{loginError}</p>
                 <div className='login__box'>
+                    
                     <p className='login__text'>Ещё не зарегистрированы?</p>
                     <Link to='/signup' className='login__link' target='_self'>Регистрация</Link>
                 </div>
