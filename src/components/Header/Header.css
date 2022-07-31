@@ -37,6 +37,9 @@
     background: #3456F3;
     border-radius: 3px;
 }
+.header-none {
+    display: none;
+}
 .header__hover:hover {
     opacity: 0.7;
 }

@@ -9,7 +9,8 @@ function Header({loggedIn}) {
 
     return (
         <>
-            <header className={`${!loggedIn || routes.pathname === '/' ? 'header' : 'header-white'}`} >
+        <div className={`${routes.pathname === '/signin' || routes.pathname === '/signup'  ? 'header-none' : 'header-visible'} `}>
+        <header className={`${routes.pathname === '/' ? 'header' : 'header-white'}` } >
                 <div className="header__container">
                     <Link to='/'>
                         <img src={logo} alt="Логотип" />
@@ -25,6 +26,8 @@ function Header({loggedIn}) {
                 )}
                 </div>
             </header>
+        </div>
+
         </>
     ) 
 }
