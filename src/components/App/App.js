@@ -21,11 +21,12 @@ function App() {
   /* Toggle короткометражек Фильмов */
   const [isChangeBox, setIsChangeBox] = useState(true);
     /* Toggle короткометражек Сохраненных Фильмов */
-  const [isChangeBoxSave, setIsChangeBoxSave] = useState(true);
+  const [isChangeBoxSave, setIsChangeBoxSave] = useState(false);
   /* Отфильтрованные фильмы */
   const [filterMoviesCollection, setFilterMoviesCollection] = useState([]);
     /* Отфильтрованные сохраненные фильмы */
   const [filterMoviesSaveCollection, setFilterMoviesSaveCollection] = useState([]);
+
   /* Отфильтрованные фильмы по времени */
   const [filterTimeMoviesCollection , setFilterTimeMoviesCollection ] = useState([]);
   /* Отфильтрованные сохраненные фильмы по времени */
@@ -46,6 +47,7 @@ function App() {
   const [loginError, setLoginError] = useState("");
   /* Данные о пользователе */
   const [currentUser, setCurrentUser] = useState({});
+  const [test, setTest] = useState([]);
 
   /* Переход по страницам*/
   const history = useHistory();
@@ -54,9 +56,7 @@ function App() {
   let getCheckBox = JSON.parse(localStorage.getItem('isChangeBox'))
 
 
-  useEffect(() => {
-      console.log('Получить все фильмы');
-  }, [])
+
   /* Проверка пользователя по токену */
 
   useEffect(() => {
@@ -64,10 +64,12 @@ function App() {
     const movies = localStorage.getItem('movies');
     const savedMovies = localStorage.getItem('savedMovies');
       if (jwt) {
+        setSearchError(false);
         setLoggedIn(true);
         if (savedMovies) {
           const resultSave = JSON.parse(savedMovies);
           setSaveMovieCollection(resultSave);
+          setFilterMoviesSaveCollection(resultSave)
         }
         if (movies) {
           const result = JSON.parse(movies);
@@ -92,7 +94,6 @@ function App() {
   /* Авторизация пользователя */
 
   function onLogin({ email, password}) {
-    console.log(email, password);
     login({email , password})
       .then((data) => {
 
@@ -104,6 +105,7 @@ function App() {
           getSaveMovies(data.token)
             .then((data) => {
               setSaveMovieCollection(data)
+              setFilterMoviesSaveCollection(data)
               localStorage.setItem('savedMovies', JSON.stringify(data));
 
             })
@@ -223,7 +225,7 @@ function App() {
   function findSaveMovies(movie) {
     setIsLoadingMovies(true);
     if(movie) {
-      
+
       const movieSaveCollection = JSON.parse(localStorage.getItem('savedMovies'))
 
       const result = searchMovies(movieSaveCollection, movie);
@@ -235,7 +237,7 @@ function App() {
       }
       setFilterMoviesSaveCollection(result)
       setIsLoadingMovies(false);
-      console.log(filterMoviesSaveCollection);
+
       if (isChangeBoxSave) {
         const resultTimeFilter = filterMovieTime(result);
         if (resultTimeFilter.length > 0) {
@@ -247,12 +249,15 @@ function App() {
         filterTimeMoviesSaveCollection(resultTimeFilter);
       }
     } else {
+      setSearchError(false);
       setFilterMoviesSaveCollection(JSON.parse(localStorage.getItem('savedMovies')))
+
       setIsChangeBoxSave(false)
       setIsLoadingMovies(false);
 
     }
   }
+
   /* Сохранить фильм в избранное */
 
   function saveMovieInCollection(movie) {
@@ -276,6 +281,10 @@ function App() {
         const index = saveMoviesList.findIndex(item => item.movieId === data.movieId)
         saveMoviesList.splice(index, 1) 
         setSaveMovieCollection(saveMoviesList)
+        setFilterMoviesSaveCollection(saveMoviesList)
+        const result = filterMovieTime(saveMoviesList);
+        setFilterTimeMoviesSaveCollection(result);
+        console.log(filterTimeMoviesSaveCollection);
         localStorage.setItem('savedMovies', JSON.stringify(saveMoviesList))
       })
   }
@@ -336,12 +345,14 @@ function App() {
     localStorage.removeItem('textForm');
     localStorage.removeItem('textFormSave');
     localStorage.removeItem('moviesShort');
+    localStorage.removeItem('moviesCollection');
     setMoviesCollection([]);
     setFilterMoviesCollection([]);
     setFilterTimeMoviesCollection([]);
     setFilterTimeMoviesSaveCollection([]);
     setSaveMovieCollection([]);
     setMoviesCollection([]);
+    setFilterMoviesSaveCollection([])
     setLoggedIn(false)
     history.push('/');
   }
@@ -350,9 +361,9 @@ function App() {
     if (isChangeBox) {
         if (pathname.pathname === "/movies") {
             if (moviesCollection.length > 0) {
-                console.log(filterMoviesCollection);
+
                 const result = filterMovieTime(filterMoviesCollection);
-                console.log(result);
+
                 if (result.length > 0) {
                   setSearchError(false);
                 }
@@ -366,9 +377,9 @@ function App() {
     }
     if(isChangeBoxSave) {
       if(pathname.pathname === "/saved-movies") {
-        console.log(saveMovieCollection);
+
         const result = filterMovieTime(saveMovieCollection);
-        console.log(result);
+
         if (result.length > 0) {
           setSearchError(false);
         }
@@ -385,7 +396,7 @@ function App() {
   useEffect(() => {
     localStorage.movies && setFilterMoviesCollection(JSON.parse(localStorage.getItem('movies')))
     localStorage.moviesShort && setFilterTimeMoviesCollection(JSON.parse(localStorage.getItem('moviesShort')))
-
+    /* setFilterMoviesSaveCollection(JSON.parse(localStorage.getItem('savedMovies'))) */
 
     setIsChangeBox(getCheckBox)
     setSearchError(false);

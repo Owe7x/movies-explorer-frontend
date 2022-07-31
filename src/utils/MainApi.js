@@ -97,7 +97,6 @@ export const setSaveMovie = ({jwt , movie}) => {
 };
 
 export const deleteSaveMovie = ({ jwt, movieId }) => {
-    console.log(movieId);
     return fetch(`${BASE_URL}/movies/${movieId}`, {
         method: 'DELETE',
         headers: {
@@ -108,7 +107,6 @@ export const deleteSaveMovie = ({ jwt, movieId }) => {
 }
 
 const checkError = (res) =>{
-    console.log(res);
     if (res.ok) {
         return res.json();
     }

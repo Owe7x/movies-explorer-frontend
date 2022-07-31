@@ -4,7 +4,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList'
 
 function SavedMovies({ findSaveMovies, findMovies,  isChangeBox , isChangeBoxSave, moviesCollection, isLoadingMovies, searchError, searchServerError, changeCheckBox, saveMovieCollection, saveMovieInCollection, deleteMovieInCollection }) {
 
-    
+    console.log(moviesCollection);
 
     return (
         <>

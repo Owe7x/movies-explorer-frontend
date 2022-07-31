@@ -44,7 +44,7 @@ function MoviesCardList({moviesCollection, isLoadingMovies, searchError, searchS
         window.addEventListener('resize', resizeWindowWidth);
     }, []);
 
-    const moviesVisible = moviesCollection.slice(0, moviesInWindow);
+    const moviesVisible = moviesCollection ? moviesCollection.slice(0, moviesInWindow) : moviesCollection;
     
     function addMoviesInCollectionVisible() {
         setMoviesInWindow(prevState => prevState + addMovies);
